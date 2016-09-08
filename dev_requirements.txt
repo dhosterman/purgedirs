@@ -1,0 +1,6 @@
+pytest
+sphinx
+autoflake
+yapf
+
+click
