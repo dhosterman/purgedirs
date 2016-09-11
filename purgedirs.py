@@ -2,10 +2,13 @@ import os
 
 import click
 
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
-@click.command()
+
+@click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("path", type=click.Path(exists=True, file_okay=False))
 @click.option(
+    "-d",
     "--dry-run",
     is_flag=True,
     help="Just show directories that would be deleted, but don't delete them.")
