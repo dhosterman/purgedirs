@@ -13,7 +13,7 @@ from purgedirs import cli, empty_directories
 def mock_os_walk(monkeypatch):
     def mock_values(*args, **kwargs):
         return [("dir1", ["dir2", "dir3", "dir4"], ["file1"]),
-                ("dir5", ["dir6", "dir7", "dir8"], []), ]
+                ("dir5", ["dir6", "dir7", "dir8"], []), (".", [], [])]
 
     monkeypatch.setattr("os.walk", mock_values)
 
@@ -39,6 +39,11 @@ def test_help_option(test_input):
 def test_dry_run_option(test_input, mock_os_walk):
     result = cli_runner()(test_input)
     assert "dir5" in result.output
+
+
+def test_include_provided_path_option(mock_os_walk):
+    result = cli_runner()(["--include-provided-path"])
+    assert "." in result.output
 
 
 @pytest.mark.parametrize("test_input", [(["."]), ])
