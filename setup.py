@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='purgedirs',
     version='0.0.1',
-    py_modultes=['purgedirs'],
+    py_modules=['purgedirs'],
     install_requires=[
         'Click',
     ],
