@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import click
 
@@ -18,9 +19,9 @@ def cli(path, dry_run):
     if dry_run:
         click.echo(empty_directories(path))
     else:
-        click.echo(
-            "If this were real, I'd have deleted all of these directories: {0}".
-            format(empty_directories(path)))
+        for path in empty_directories(path):
+            shutil.rmtree(path)
+            click.echo("Removing: {0}".format(path))
 
 
 def empty_directories(path):

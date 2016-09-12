@@ -1,5 +1,7 @@
 from functools import partial
 import os
+import shutil
+from unittest.mock import MagicMock, patch
 
 from click.testing import CliRunner
 import pytest
@@ -34,13 +36,14 @@ def test_help_option(test_input):
 
 
 @pytest.mark.parametrize("test_input", [(["--dry-run", "."]), (["-d", "."])])
-def test_help_option(test_input, mock_os_walk):
+def test_dry_run_option(test_input, mock_os_walk):
     result = cli_runner()(test_input)
     assert "dir5" in result.output
 
 
 @pytest.mark.parametrize("test_input", [(["."]), ])
-def test_help_option(test_input, mock_os_walk):
-    result = cli_runner()(test_input)
-    assert "If this were real" in result.output
-    assert "dir5" in result.output
+def test_cli(test_input, mock_os_walk, monkeypatch):
+    with patch("shutil.rmtree") as mock:
+        result = cli_runner()(test_input)
+        mock.assert_called_once_with(os.getcwd() + "/dir5")
+        assert "dir5" in result.output
